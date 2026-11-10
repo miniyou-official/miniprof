@@ -1,0 +1,28 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"main": "worker.ts",
+	"name": "miniyou",
+	"compatibility_date": "2026-11-01",
+	"compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+	"assets": {
+		"directory": ".open-next/assets",
+		"binding": "ASSETS"
+	},
+	"services": [
+		{
+			"binding": "WORKER_SELF_REFERENCE",
+			"service": "miniyou"
+		}
+	],
+	"images": {
+		"binding": "IMAGES"
+	},
+	"vars": {
+		// Trust Cloudflare's own client-IP header for rate limits (see src/lib/rateLimit.js)
+		"TRUST_CLOUDFLARE": "1"
+	},
+	"triggers": {
+		// Same time as the old Vercel cron: 18:30 UTC every day (Pro expiry and housekeeping)
+		"crons": ["30 18 * * *"]
+	}
+}
